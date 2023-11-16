@@ -1,7 +1,19 @@
 package golem:template
 
 interface api {
-  get: func() -> ()
+  record product {
+    id: string,
+    name: string,
+  }
+
+  enum error {
+    duplicate,
+    // todo: ...
+  }
+
+  get: func(id: string) -> option<product>
+
+  add: func(product: product) -> result<_, error>
 }
 
 world product {
