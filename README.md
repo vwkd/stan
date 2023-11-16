@@ -35,26 +35,16 @@ cargo test -- --test-threads=1
 - create Golem template
 
 ```sh
-golem-cli template add \
-  --template-name stan \
-  target/wasm32-wasi/release/stan.wasm
+golem-cli template add -t foo -p stan target/wasm32-wasi/release/foo.wasm
 # or if already exists
-golem-cli template update \
-  --template-name stan \
-  target/wasm32-wasi/release/stan.wasm
+golem-cli template update -t foo -p stan target/wasm32-wasi/release/foo.wasm
 ```
 
 - create Golem worker
 
 ```sh
-golem-cli worker add \
-  --worker-name stan-1 \
-  --template-name stan
+golem-cli worker add -w foo-1 -t foo -p stan
 # or if already exists
-golem-cli worker delete \
-  --worker-name stan-1 \
-  --template-name stan
-golem-cli worker add \
-  --worker-name stan-1 \
-  --template-name stan
+golem-cli worker delete -w foo-1 -t foo -p stan
+golem-cli worker add -w foo-1 -t foo -p stan
 ```
