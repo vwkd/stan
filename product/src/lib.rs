@@ -1,16 +1,28 @@
 cargo_component_bindings::generate!();
 use crate::bindings::exports::golem::template::api::*;
-use std::sync::Mutex;
+use once_cell::sync::Lazy;
+use std::{collections::HashMap, sync::Mutex};
 
-#[derive(Debug, Clone)]
-struct State {}
-
-static STATE: Mutex<State> = Mutex::new(State {});
+static PRODUCTS: Lazy<Mutex<HashMap<String, Product>>> = Lazy::new(|| Mutex::new(HashMap::new()));
 
 struct Component;
 
 impl Guest for Component {
-    fn get() -> () {}
+    fn get(id: String) -> Option<Product> {
+        PRODUCTS.lock().unwrap().get(&id).cloned()
+    }
+
+    fn add(product: Product) -> Result<(), Error> {
+        let mut products = PRODUCTS.lock().unwrap();
+
+        if products.contains_key(&product.id) {
+            return Err(Error::Duplicate);
+        }
+
+        products.insert(product.id.clone(), product);
+
+        Ok(())
+    }
 }
 
 #[cfg(test)]
