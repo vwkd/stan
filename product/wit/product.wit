@@ -4,6 +4,6 @@ interface api {
   get: func() -> ()
 }
 
-world stan {
+world product {
   export api
 }

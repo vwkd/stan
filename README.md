@@ -52,13 +52,3 @@ golem-cli worker add \
   --worker-name stan-1 \
   --template-name stan
 ```
-
-- query Golem worker
-
-```sh
-golem-cli worker invoke-and-await \
-  --template-name=stan \
-  --worker-name=stan-1 \
-  --function=golem:template/api/get \
-  --parameters='[]'
-```

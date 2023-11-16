@@ -147,6 +147,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "product"
+version = "0.0.1"
+dependencies = [
+ "cargo-component-bindings",
+ "once_cell",
+]
+
+[[package]]
 name = "pulldown-cmark"
 version = "0.9.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -222,14 +230,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b19b32ed6d899ab23174302ff105c1577e45a06b08d4fe0a9dd13ce804bbbf71"
 dependencies = [
  "smallvec",
-]
-
-[[package]]
-name = "stan"
-version = "0.0.1"
-dependencies = [
- "cargo-component-bindings",
- "once_cell",
 ]
 
 [[package]]
