@@ -1,0 +1,9 @@
+package golem:template
+
+interface api {
+  get: func() -> ()
+}
+
+world stan {
+  export api
+}
