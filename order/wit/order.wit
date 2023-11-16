@@ -1,0 +1,22 @@
+package golem:template
+
+interface api {
+  record item {
+    product-id: string,
+    price: float32,
+    quantity: u32,
+  }
+
+  enum error {
+    inventory-too-low,
+    // todo: ...
+  }
+
+  create: func(items: list<item>) -> result<_, error>
+}
+
+world order {
+  import golem:api/host
+  
+  export api
+}
