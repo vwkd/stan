@@ -1,5 +1,13 @@
 # README
 
+A modern and modular ERP
+
+
+
+## Features
+
+- built on Wasm workers running in Golem Cloud
+
 
 
 ## Usage
