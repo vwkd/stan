@@ -30,6 +30,68 @@ impl Guest for Component {
 mod tests {
     use super::*;
 
+    impl PartialEq for Product {
+        fn eq(&self, other: &Self) -> bool {
+            self.id == other.id && self.name == other.name
+        }
+    }
+
     #[test]
-    fn get() {}
+    fn get() {
+        clear();
+
+        let product = Product {
+            id: "123".to_string(),
+            name: "foo".to_string(),
+        };
+
+        let _ = Component::add(product.clone());
+        let output = Component::get(product.id.clone());
+
+        assert_eq!(output, Some(product));
+    }
+
+    #[test]
+    fn get_invalid() {
+        clear();
+
+        let output = Component::get("123".to_string());
+
+        assert_eq!(output, None);
+    }
+
+    #[test]
+    fn add() {
+        clear();
+
+        let product = Product {
+            id: "123".to_string(),
+            name: "foo".to_string(),
+        };
+
+        let output = Component::add(product.clone());
+
+        assert_eq!(output, Ok(()));
+    }
+
+    #[test]
+    fn add_duplicate() {
+        clear();
+
+        let product = Product {
+            id: "123".to_string(),
+            name: "foo".to_string(),
+        };
+
+        let _ = Component::add(product.clone());
+        let output = Component::add(product.clone());
+
+        assert_eq!(output, Err(Error::Duplicate));
+    }
+
+    fn clear() {
+        let mut products = PRODUCTS.lock().unwrap();
+        products.clear();
+        drop(products);
+    }
 }
