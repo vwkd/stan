@@ -1,0 +1,19 @@
+package golem:template
+
+interface api {
+  enum error {
+    too-low,
+    too-high,
+    // todo: ...
+  }
+
+  get: func(id: string) -> u32
+
+  increase: func(id: string, amount: u32) -> result<_, error>
+  
+  decrease: func(id: string, amount: u32) -> result<_, error>
+}
+
+world inventory {
+  export api
+}

@@ -102,6 +102,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "inventory"
+version = "0.0.1"
+dependencies = [
+ "cargo-component-bindings",
+ "once_cell",
+]
+
+[[package]]
 name = "itoa"
 version = "1.0.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
