@@ -1,0 +1,14 @@
+package golem:template
+
+interface api {
+  enum error {
+    missing-supplies
+    // todo: ...
+  }
+
+  create: func(routing-id: string, amount: u32) -> result<_, error>
+}
+
+world manufacturing {
+  export api
+}

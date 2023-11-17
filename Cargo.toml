@@ -2,6 +2,7 @@
 
 members = [
   "inventory",
+  "manufacturing",
   "order",
   "product",
 ]
