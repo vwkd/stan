@@ -1,21 +1,21 @@
+mod worker;
+
 cargo_component_bindings::generate!();
 use crate::bindings::exports::golem::template::api::*;
-use crate::bindings::golem::api::host::*;
+use worker::{await_worker, Data};
 
 struct Component;
 
 impl Guest for Component {
-    fn create(items: Vec<Item>) -> Result<(), Error> {
+    fn create(_items: Vec<Item>) -> Result<(), Error> {
         // inventory
-        let inventory_promise_id = golem_create_promise();
-        golem_complete_promise(&inventory_promise_id, &[]);
-        let _ = golem_await_promise(&inventory_promise_id);
+        let _result = await_worker("inventory", Data {});
 
-        // ship
-        // todo:
+        // shipment
+        let _result = await_worker("shipment", Data {});
 
-        // pay
-        // todo:
+        // payment
+        let _result = await_worker("payment", Data {});
 
         Ok(())
     }
