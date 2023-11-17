@@ -197,6 +197,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "routing"
+version = "0.0.1"
+dependencies = [
+ "cargo-component-bindings",
+ "once_cell",
+]
+
+[[package]]
 name = "ryu"
 version = "1.0.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"

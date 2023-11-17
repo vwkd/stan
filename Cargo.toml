@@ -5,6 +5,7 @@ members = [
   "manufacturing",
   "order",
   "product",
+  "routing",
 ]
 
 resolver = "2"

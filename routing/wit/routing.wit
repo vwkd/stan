@@ -1,0 +1,30 @@
+package golem:template
+
+interface api {
+  record part {
+    material-id: string,
+    amount: u32,
+  }
+
+  record routing {
+    material-id: string,
+    parts: list<part>
+  }
+
+  enum error {
+    duplicate,
+    invalid-material,
+    // todo: ...
+  }
+
+  /// get routing
+  get: func(id: string) -> option<routing>
+
+  /// add routing
+  /// returns routing id or error
+  add: func(routing: routing) -> result<string, error>
+}
+
+world routing {
+  export api
+}
