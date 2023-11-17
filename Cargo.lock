@@ -135,6 +135,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "material"
+version = "0.0.1"
+dependencies = [
+ "cargo-component-bindings",
+ "once_cell",
+]
+
+[[package]]
 name = "memchr"
 version = "2.6.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"

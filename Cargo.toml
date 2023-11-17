@@ -3,6 +3,7 @@
 members = [
   "inventory",
   "manufacturing",
+  "material",
   "order",
   "product",
   "routing",
