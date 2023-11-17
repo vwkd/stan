@@ -16,7 +16,5 @@ interface api {
 }
 
 world order {
-  import golem:api/host
-  
   export api
 }
