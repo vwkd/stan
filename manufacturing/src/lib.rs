@@ -5,19 +5,41 @@ use crate::bindings::exports::golem::template::material;
 use crate::bindings::exports::golem::template::routing;
 
 use once_cell::sync::Lazy;
-use std::{collections::HashMap, sync::Mutex};
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
 
-static MATERIALS: Lazy<Mutex<HashMap<String, material::Material>>> =
-    Lazy::new(|| Mutex::new(HashMap::new()));
+#[derive(Debug, Clone)]
+pub struct Material {
+    id: Box<str>,
+    name: String,
+}
 
-static ROUTINGS: Lazy<Mutex<HashMap<String, routing::Routing>>> =
-    Lazy::new(|| Mutex::new(HashMap::new()));
+#[derive(Debug)]
+pub struct Part {
+    // id: Box<str>,
+    material: Arc<Material>,
+    amount: u32,
+}
+
+#[derive(Debug)]
+pub struct Routing {
+    id: Box<str>,
+    material: Arc<Material>,
+    parts: Box<[Part]>,
+}
+
+static MATERIALS: Lazy<Mutex<HashMap<String, Material>>> = Lazy::new(|| Mutex::new(HashMap::new()));
+
+static ROUTINGS: Lazy<Mutex<HashMap<String, Routing>>> = Lazy::new(|| Mutex::new(HashMap::new()));
 
 struct Component;
 
 impl material::Guest for Component {
     fn get(id: String) -> Option<material::Material> {
         MATERIALS.lock().unwrap().get(&id).cloned()
+        // map(|material| material::Material {
+        //     name: material.name.to_string()
+        // })
     }
 
     fn add(material: material::Material) -> Result<String, material::Error> {
@@ -29,6 +51,8 @@ impl material::Guest for Component {
         if materials.contains_key(&id) {
             return Err(material::Error::Duplicate);
         }
+
+        // let material = Material { name: material.name.into_boxed_str() };
 
         materials.insert(id.clone(), material);
 
@@ -111,7 +135,11 @@ mod material_tests {
 
 impl routing::Guest for Component {
     fn get(id: String) -> Option<routing::Routing> {
-        ROUTINGS.lock().unwrap().get(&id).cloned()
+        ROUTINGS.lock().unwrap().get(&id).map(|routing| {
+            let material = routing.material;
+
+            MATERIALS.lock().unwrap().val
+        })
     }
 
     fn add(routing: routing::Routing) -> Result<String, routing::Error> {
