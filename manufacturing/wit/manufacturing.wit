@@ -1,6 +1,49 @@
 package golem:template
 
-interface api {
+interface material {
+  record material {
+    name: string,
+  }
+
+  enum error {
+    duplicate,
+    // todo: ...
+  }
+
+  /// get material
+  get: func(id: string) -> option<material>
+
+  /// add material
+  /// returns material id or error
+  add: func(material: material) -> result<string, error>
+}
+
+interface routing {
+  record part {
+    material-id: string,
+    amount: u32,
+  }
+
+  record routing {
+    material-id: string,
+    parts: list<part>
+  }
+
+  enum error {
+    duplicate,
+    invalid-material,
+    // todo: ...
+  }
+
+  /// get routing
+  get: func(id: string) -> option<routing>
+
+  /// add routing
+  /// returns routing id or error
+  add: func(routing: routing) -> result<string, error>
+}
+
+interface build {
   enum error {
     missing-supplies
     // todo: ...
@@ -10,5 +53,7 @@ interface api {
 }
 
 world manufacturing {
-  export api
+  export material
+  export build
+  export routing
 }
