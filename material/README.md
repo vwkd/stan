@@ -15,5 +15,5 @@ golem-cli worker invoke-and-await -w material-1 -t material -p stan -f golem:tem
 - get
 
 ```sh
-golem-cli worker invoke-and-await -w material-1 -t material -p stan -f golem:template/api/get -j '["123"]'
+golem-cli worker invoke-and-await -w material-1 -t material -p stan -f golem:template/api/get -j '[123]'
 ```
