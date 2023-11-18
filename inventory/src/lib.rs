@@ -1,5 +1,5 @@
 cargo_component_bindings::generate!();
-use crate::bindings::exports::golem::template::api::*;
+use crate::bindings::exports::golem::template::api;
 use once_cell::sync::Lazy;
 use std::{collections::HashMap, sync::Mutex};
 
@@ -8,18 +8,18 @@ static INVENTORY: Lazy<Mutex<HashMap<String, u32>>> = Lazy::new(|| Mutex::new(Ha
 
 struct Component;
 
-impl Guest for Component {
+impl api::Guest for Component {
     fn get(id: String) -> u32 {
         INVENTORY.lock().unwrap().get(&id).cloned().unwrap_or(0)
     }
 
-    fn increase(id: String, amount: u32) -> Result<(), Error> {
+    fn increase(id: String, amount: u32) -> Result<(), api::Error> {
         let mut inventory = INVENTORY.lock().unwrap();
 
         let existing = inventory.get(&id).cloned().unwrap_or(0);
 
         if existing > u32::MAX - amount {
-            return Err(Error::TooHigh);
+            return Err(api::Error::TooHigh);
         }
 
         inventory.insert(id, existing + amount);
@@ -27,13 +27,13 @@ impl Guest for Component {
         Ok(())
     }
 
-    fn decrease(id: String, amount: u32) -> Result<(), Error> {
+    fn decrease(id: String, amount: u32) -> Result<(), api::Error> {
         let mut inventory = INVENTORY.lock().unwrap();
 
         let existing = inventory.get(&id).cloned().unwrap_or(0);
 
         if amount > existing {
-            return Err(Error::TooLow);
+            return Err(api::Error::TooLow);
         }
 
         inventory.insert(id, existing - amount);
@@ -46,6 +46,7 @@ impl Guest for Component {
 // beware: must run sequentially with `cargo test -- --test-threads=1`
 mod tests {
     use super::*;
+    use crate::bindings::exports::golem::template::api::Guest;
 
     #[test]
     fn get() {
@@ -91,7 +92,7 @@ mod tests {
         let _ = Component::increase(id.clone(), u32::MAX - 10);
         let output = Component::increase(id.clone(), amount);
 
-        assert_eq!(output, Err(Error::TooHigh));
+        assert_eq!(output, Err(api::Error::TooHigh));
     }
 
     #[test]
@@ -116,7 +117,7 @@ mod tests {
 
         let output = Component::decrease(id.clone(), amount);
 
-        assert_eq!(output, Err(Error::TooLow));
+        assert_eq!(output, Err(api::Error::TooLow));
     }
 
     fn clear() {
