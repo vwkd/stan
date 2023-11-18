@@ -1,11 +1,11 @@
 cargo_component_bindings::generate!();
 
-use crate::bindings::exports::golem::template::api::*;
+use crate::bindings::exports::golem::template::api;
 
 struct Component;
 
-impl Guest for Component {
-    fn create(_routing_id: String, _amount: u32) -> Result<(), Error> {
+impl api::Guest for Component {
+    fn create(_routing_id: String, _amount: u32) -> Result<(), api::Error> {
         // get routing
         // let _routing = ...::routing::get(routing_id);
 
