@@ -12,7 +12,7 @@ interface api {
     // todo: ...
   }
 
-  create: func(items: list<item>) -> result<_, error>
+  create: func(item: item) -> result<_, error>
 }
 
 world order {

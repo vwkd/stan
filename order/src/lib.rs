@@ -4,9 +4,9 @@ use crate::bindings::exports::golem::template::api;
 struct Component;
 
 impl api::Guest for Component {
-    fn create(_items: Vec<api::Item>) -> Result<(), api::Error> {
+    fn create(_item: api::Item) -> Result<(), api::Error> {
         // inventory
-        // decrease each item by quantity
+        // decrease item by quantity
         // let _result = ...::inventory::decrease(id: ..., amount: ...);
 
         // notification of successful order or error
