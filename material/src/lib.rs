@@ -2,7 +2,7 @@ cargo_component_bindings::generate!();
 use crate::bindings::exports::golem::template::api;
 use std::sync::Mutex;
 
-static MATERIALS: Mutex<Vec<api::Material>> = Mutex::new(Vec::new());
+static MATERIALS: Mutex<Vec<Option<api::Material>>> = Mutex::new(Vec::new());
 
 struct Component;
 
@@ -12,7 +12,7 @@ impl api::Guest for Component {
 
         let materials = MATERIALS.lock().unwrap();
 
-        materials.get(id).cloned()
+        materials.get(id).cloned().unwrap_or(None)
     }
 
     fn add(material: api::MaterialAdd) -> Result<u64, api::ErrorAdd> {
@@ -30,7 +30,7 @@ impl api::Guest for Component {
             name: material.name,
         };
 
-        materials.push(material);
+        materials.push(Some(material));
 
         Ok(id)
     }
@@ -40,7 +40,11 @@ impl api::Guest for Component {
 
         let mut materials = MATERIALS.lock().unwrap();
 
-        let mat = materials.get_mut(id).ok_or(api::ErrorUpdate::NotExist)?;
+        let mat = materials
+            .get_mut(id)
+            .ok_or(api::ErrorUpdate::NotExist)?
+            .as_mut()
+            .ok_or(api::ErrorUpdate::NotExist)?;
 
         let material_old = mat.clone();
 
@@ -61,7 +65,15 @@ impl api::Guest for Component {
             return Err(api::ErrorDelete::NotExist);
         }
 
-        Ok(materials.remove(id))
+        let material_old = materials
+            .get(id)
+            .cloned()
+            .unwrap()
+            .ok_or(api::ErrorDelete::NotExist)?;
+
+        materials[id] = None;
+
+        Ok(material_old)
     }
 }
 
@@ -113,6 +125,22 @@ mod tests {
             name: "foo".to_string(),
         };
 
+        let output = Component::add(material.clone());
+
+        assert_eq!(output, Ok(id));
+    }
+
+    #[test]
+    fn add_incrementing_ids() {
+        clear();
+
+        let id = 1;
+
+        let material = api::MaterialAdd {
+            name: "foo".to_string(),
+        };
+
+        let _ = Component::add(material.clone());
         let output = Component::add(material.clone());
 
         assert_eq!(output, Ok(id));
@@ -191,6 +219,23 @@ mod tests {
         let output = Component::delete(id);
 
         assert_eq!(output, Err(api::ErrorDelete::NotExist));
+    }
+
+    #[test]
+    fn delete_incrementing_ids() {
+        clear();
+
+        let id = 1;
+
+        let material = api::MaterialAdd {
+            name: "foo".to_string(),
+        };
+
+        let _ = Component::add(material.clone());
+        let _ = Component::delete(id);
+        let output = Component::add(material.clone());
+
+        assert_eq!(output, Ok(id));
     }
 
     fn clear() {
