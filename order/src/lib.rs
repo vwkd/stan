@@ -1,10 +1,10 @@
 cargo_component_bindings::generate!();
-use crate::bindings::exports::golem::template::api::*;
+use crate::bindings::exports::golem::template::api;
 
 struct Component;
 
-impl Guest for Component {
-    fn create(_items: Vec<Item>) -> Result<(), Error> {
+impl api::Guest for Component {
+    fn create(_items: Vec<api::Item>) -> Result<(), api::Error> {
         // inventory
         // decrease each item by quantity
         // let _result = ...::inventory::decrease(id: ..., amount: ...);
