@@ -34,47 +34,6 @@ impl api::Guest for Component {
 
         Ok(id)
     }
-
-    fn update(id: u64, material: api::MaterialUpdate) -> Result<api::Material, api::ErrorUpdate> {
-        let id: usize = id.try_into().expect("64-bit OS");
-
-        let mut materials = MATERIALS.lock().unwrap();
-
-        let mat = materials
-            .get_mut(id)
-            .ok_or(api::ErrorUpdate::NotExist)?
-            .as_mut()
-            .ok_or(api::ErrorUpdate::NotExist)?;
-
-        let material_old = mat.clone();
-
-        if let Some(name) = material.name {
-            mat.name = name
-        }
-        // ... remaining
-
-        Ok(material_old)
-    }
-
-    fn delete(id: u64) -> Result<api::Material, api::ErrorDelete> {
-        let id: usize = id.try_into().expect("64-bit OS");
-
-        let mut materials = MATERIALS.lock().unwrap();
-
-        if id >= materials.len() {
-            return Err(api::ErrorDelete::NotExist);
-        }
-
-        let material_old = materials
-            .get(id)
-            .cloned()
-            .unwrap()
-            .ok_or(api::ErrorDelete::NotExist)?;
-
-        materials[id] = None;
-
-        Ok(material_old)
-    }
 }
 
 #[cfg(test)]
@@ -155,88 +114,6 @@ mod tests {
 
     //     assert_eq!(output, Err(api::ErrorAdd::MaxCapacity));
     // }
-
-    #[test]
-    fn update() {
-        clear();
-
-        let id = 0;
-        let name = "foo".to_string();
-
-        let material = api::MaterialAdd { name: name.clone() };
-
-        let _ = Component::add(material.clone());
-
-        let material_new = api::MaterialUpdate {
-            name: Some("bar".to_string()),
-        };
-
-        let output = Component::update(id, material_new);
-
-        let material = api::Material { id, name };
-
-        assert_eq!(output, Ok(material));
-    }
-
-    #[test]
-    fn update_not_exist() {
-        clear();
-
-        let id = 123;
-
-        let material = api::MaterialUpdate {
-            name: Some("foo".to_string()),
-        };
-
-        let output = Component::update(id, material);
-
-        assert_eq!(output, Err(api::ErrorUpdate::NotExist));
-    }
-
-    #[test]
-    fn delete() {
-        clear();
-
-        let id = 0;
-        let name = "foo".to_string();
-
-        let material = api::MaterialAdd { name: name.clone() };
-
-        let _ = Component::add(material.clone());
-        let output = Component::delete(id);
-
-        let material = api::Material { id, name };
-
-        assert_eq!(output, Ok(material));
-    }
-
-    #[test]
-    fn delete_not_exist() {
-        clear();
-
-        let id = 123;
-
-        let output = Component::delete(id);
-
-        assert_eq!(output, Err(api::ErrorDelete::NotExist));
-    }
-
-    #[test]
-    fn delete_incrementing_ids() {
-        clear();
-
-        let id = 1;
-
-        let material = api::MaterialAdd {
-            name: "foo".to_string(),
-        };
-
-        let _ = Component::add(material.clone());
-        let _ = Component::delete(id);
-        let output = Component::add(material.clone());
-
-        assert_eq!(output, Ok(id));
-    }
 
     fn clear() {
         let mut materials = MATERIALS.lock().unwrap();

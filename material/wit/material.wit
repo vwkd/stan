@@ -11,21 +11,8 @@ interface api {
     // ... remaining
   }
 
-  record material-update {
-    name: option<string>,
-    // ... remaining
-  }
-
   enum error-add {
     max-capacity,
-  }
-
-  enum error-update {
-    not-exist,
-  }
-
-  enum error-delete {
-    not-exist,
   }
 
   /// get material
@@ -34,15 +21,6 @@ interface api {
   /// add material
   /// returns material id or error
   add: func(material: material-add) -> result<u64, error-add>
-
-  /// update material
-  /// returns previous material or error
-  update: func(id: u64, material: material-update) -> result<material, error-update>
-
-  /// delete material
-  /// returns deleted material or error
-  /// todo: don't delete if still referenced
-  delete: func(id: u64) -> result<material, error-delete>
 }
 
 world material {
