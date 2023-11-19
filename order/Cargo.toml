@@ -14,3 +14,4 @@ cargo-component-bindings = { git = "https://github.com/bytecodealliance/cargo-co
 path = "wit"
 
 [package.metadata.component.target.dependencies]
+"golem:inventory" = { path = "../inventory/wit" }

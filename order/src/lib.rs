@@ -1,13 +1,14 @@
 cargo_component_bindings::generate!();
 use crate::bindings::exports::golem::order::api;
+use crate::bindings::golem::inventory;
 
 struct Component;
 
 impl api::Guest for Component {
-    fn create(_item: api::Item) -> Result<(), api::Error> {
+    fn create(item: api::Item) -> Result<(), api::Error> {
         // inventory
         // decrease item by quantity
-        // let _result = ...::inventory::decrease(id: ..., amount: ...);
+        let _result = inventory::api::decrease(&item.product_id, item.quantity);
 
         // notification of successful order or error
 
