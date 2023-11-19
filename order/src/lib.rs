@@ -1,5 +1,5 @@
 cargo_component_bindings::generate!();
-use crate::bindings::exports::golem::template::api;
+use crate::bindings::exports::golem::order::api;
 
 struct Component;
 

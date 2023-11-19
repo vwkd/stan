@@ -1,4 +1,4 @@
-package golem:template
+package golem:product
 
 interface api {
   record product {

@@ -1,4 +1,4 @@
-package golem:template
+package golem:manufacturing
 
 interface api {
   enum error {

@@ -9,11 +9,11 @@ Material state worker
 - add
 
 ```sh
-golem-cli worker invoke-and-await -w material-1 -t material -p stan -f golem:template/api/add -j '[{"name": "foo"}]'
+golem-cli worker invoke-and-await -w material-1 -t material -p stan -f golem:material/api/add -j '[{"name": "foo"}]'
 ```
 
 - get
 
 ```sh
-golem-cli worker invoke-and-await -w material-1 -t material -p stan -f golem:template/api/get -j '[123]'
+golem-cli worker invoke-and-await -w material-1 -t material -p stan -f golem:material/api/get -j '[123]'
 ```

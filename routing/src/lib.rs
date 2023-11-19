@@ -1,5 +1,5 @@
 cargo_component_bindings::generate!();
-use crate::bindings::exports::golem::template::api;
+use crate::bindings::exports::golem::routing::api;
 
 use once_cell::sync::Lazy;
 use std::{collections::HashMap, sync::Mutex};
@@ -36,7 +36,7 @@ impl api::Guest for Component {
 // beware: must run sequentially with `cargo test -- --test-threads=1`
 mod tests {
     use super::*;
-    use crate::bindings::exports::golem::template::api::Guest;
+    use crate::bindings::exports::golem::routing::api::Guest;
 
     impl PartialEq for api::Part {
         fn eq(&self, other: &Self) -> bool {

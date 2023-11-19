@@ -1,4 +1,4 @@
-package golem:template
+package golem:order
 
 interface api {
   record item {
