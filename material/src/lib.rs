@@ -1,5 +1,5 @@
 cargo_component_bindings::generate!();
-use crate::bindings::exports::golem::material::api;
+use bindings::exports::golem::material::api;
 use std::sync::Mutex;
 
 static MATERIALS: Mutex<Vec<Option<api::Material>>> = Mutex::new(Vec::new());
@@ -39,8 +39,8 @@ impl api::Guest for Component {
 #[cfg(test)]
 // beware: must run sequentially with `cargo test -- --test-threads=1`
 mod tests {
+    use super::bindings::exports::golem::material::api::Guest;
     use super::*;
-    use crate::bindings::exports::golem::material::api::Guest;
 
     impl PartialEq for api::Material {
         fn eq(&self, other: &Self) -> bool {
