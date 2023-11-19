@@ -4,14 +4,13 @@ version = "0.0.1"
 edition = "2021"
 
 [lib]
-path = "src/lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
 cargo-component-bindings = "0.4.1"
 
-[package.metadata.component.target]
-path = "wit"
+[package.metadata.component]
+package = "golem:order"
 
 [package.metadata.component.target.dependencies]
 "golem:inventory" = { path = "../inventory/wit" }

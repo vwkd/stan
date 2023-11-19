@@ -4,14 +4,13 @@ version = "0.0.1"
 edition = "2021"
 
 [lib]
-path = "src/lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
 once_cell = "1.17.1"
 cargo-component-bindings = "0.4.1"
 
-[package.metadata.component.target]
-path = "wit"
+[package.metadata.component]
+package = "golem:routing"
 
 [package.metadata.component.target.dependencies]
