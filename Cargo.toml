@@ -9,8 +9,8 @@ members = [
   "routing",
 ]
 
-resolver = "2"
+# resolver = "2"
 
-[profile.release]
-lto = true
-opt-level = 's'
+# [profile.release]
+# lto = true
+# opt-level = 's'
