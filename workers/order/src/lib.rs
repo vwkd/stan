@@ -6,9 +6,11 @@ struct Component;
 
 impl api::Guest for Component {
     fn create(item: api::Item) -> Result<(), api::Error> {
-        // inventory
-        // decrease item by quantity
-        let _result = inventory::api::decrease(&item.product_id, item.quantity);
+        // decrease inventory of item by quantity
+        inventory::api::decrease(&item.product_id, item.quantity).map_err(|e| match e {
+            inventory::api::Error::TooLow => api::Error::InventoryTooLow,
+            _ => todo!(),
+        })?;
 
         // notification of successful order or error
 
