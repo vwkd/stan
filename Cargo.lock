@@ -30,6 +30,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "cli"
+version = "0.0.1"
+
+[[package]]
 name = "inventory"
 version = "0.0.1"
 dependencies = [

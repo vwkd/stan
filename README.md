@@ -23,13 +23,13 @@ cargo install cargo-component
 - build
 
 ```sh
-cargo component build --release
+cargo component build --workspace --release
 ```
 
 - test
 
 ```sh
-cargo test -- --test-threads=1
+cargo test --workspace -- --test-threads=1
 ```
 
 - create Golem template
