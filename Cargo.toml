@@ -1,12 +1,12 @@
 [workspace]
 
 members = [
-  "inventory",
-  "manufacturing",
-  "material",
-  "order",
-  "product",
-  "routing",
+  "workers/inventory",
+  "workers/manufacturing",
+  "workers/material",
+  "workers/order",
+  "workers/product",
+  "workers/routing",
 ]
 
 resolver = "2"
