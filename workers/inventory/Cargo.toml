@@ -12,5 +12,3 @@ cargo-component-bindings = { workspace = true }
 
 [package.metadata.component]
 package = "golem:inventory"
-
-[package.metadata.component.dependencies]

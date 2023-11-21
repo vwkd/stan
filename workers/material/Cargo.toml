@@ -12,5 +12,3 @@ cargo-component-bindings = { workspace = true }
 
 [package.metadata.component]
 package = "golem:material"
-
-[package.metadata.component.dependencies]
