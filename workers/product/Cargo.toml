@@ -1,14 +1,14 @@
 [package]
 name = "product"
-version = "0.0.1"
-edition = "2021"
+version = { workspace = true }
+edition = { workspace = true }
 
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
-once_cell = "1.17.1"
-cargo-component-bindings = "0.4.1"
+once_cell = { workspace = true }
+cargo-component-bindings = { workspace = true }
 
 [package.metadata.component]
 package = "golem:product"

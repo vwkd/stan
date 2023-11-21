@@ -1,5 +1,4 @@
 [workspace]
-
 members = [
   "workers/inventory",
   "workers/manufacturing",
@@ -9,7 +8,13 @@ members = [
   "workers/routing",
 ]
 
-resolver = "2"
+[workspace.package]
+version = "0.0.1"
+edition = "2021"
+
+[workspace.dependencies]
+cargo-component-bindings = "0.4.1"
+once_cell = "1.17.1"
 
 [profile.release]
 lto = true
