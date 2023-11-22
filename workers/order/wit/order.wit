@@ -9,10 +9,20 @@ interface api {
 
   enum error {
     inventory-too-low,
+    payment-declined
     // todo: ...
   }
 
-  create: func(item: item) -> result<_, error>
+  record payment {
+    handler: func(amount: float32) -> result<_, error-payment>
+  }
+
+  enum error-payment {
+    declined
+    // todo: ...
+  }
+
+  create: func(item: item, payment: payment) -> result<_, error>
 }
 
 world order {
