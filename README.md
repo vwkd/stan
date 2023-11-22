@@ -1,12 +1,13 @@
 # README
 
-A modern and modular ERP
+A modern, modular and extensible ERP
 
 
 
 ## Features
 
-- built on Wasm workers running in Golem Cloud
+- built as Wasm components
+- running durably in Golem Cloud
 
 
 
