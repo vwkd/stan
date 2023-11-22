@@ -1,5 +1,5 @@
 cargo_component_bindings::generate!();
-use bindings::exports::golem::routing::api;
+use bindings::exports::stan::routing::api;
 
 use once_cell::sync::Lazy;
 use std::{collections::HashMap, sync::Mutex};
@@ -35,7 +35,7 @@ impl api::Guest for Component {
 #[cfg(test)]
 // beware: must run sequentially with `cargo test -- --test-threads=1`
 mod tests {
-    use super::bindings::exports::golem::routing::api::Guest;
+    use super::bindings::exports::stan::routing::api::Guest;
     use super::*;
 
     impl PartialEq for api::Part {

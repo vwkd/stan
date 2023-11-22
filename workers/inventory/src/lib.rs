@@ -1,5 +1,5 @@
 cargo_component_bindings::generate!();
-use bindings::exports::golem::inventory::api;
+use bindings::exports::stan::inventory::api;
 use once_cell::sync::Lazy;
 use std::{collections::HashMap, sync::Mutex};
 
@@ -45,7 +45,7 @@ impl api::Guest for Component {
 #[cfg(test)]
 // beware: must run sequentially with `cargo test -- --test-threads=1`
 mod tests {
-    use super::bindings::exports::golem::inventory::api::Guest;
+    use super::bindings::exports::stan::inventory::api::Guest;
     use super::*;
 
     #[test]

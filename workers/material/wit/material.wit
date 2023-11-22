@@ -1,4 +1,4 @@
-package golem:material
+package stan:material
 
 interface api {
   record material {

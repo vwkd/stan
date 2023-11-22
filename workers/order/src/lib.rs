@@ -1,6 +1,6 @@
 cargo_component_bindings::generate!();
-use bindings::exports::golem::order::api;
-use bindings::golem::inventory;
+use bindings::exports::stan::order::api;
+use bindings::stan::inventory;
 
 struct Component;
 

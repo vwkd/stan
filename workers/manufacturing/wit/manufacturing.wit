@@ -1,4 +1,4 @@
-package golem:manufacturing
+package stan:manufacturing
 
 interface api {
   enum error {

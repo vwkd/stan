@@ -1,4 +1,4 @@
-package golem:routing
+package stan:routing
 
 interface api {
   record part {

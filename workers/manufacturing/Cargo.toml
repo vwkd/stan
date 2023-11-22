@@ -10,4 +10,4 @@ crate-type = ["cdylib"]
 cargo-component-bindings = { workspace = true }
 
 [package.metadata.component]
-package = "golem:manufacturing"
+package = "stan:manufacturing"

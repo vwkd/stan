@@ -1,4 +1,4 @@
-package golem:inventory
+package stan:inventory
 
 interface api {
   enum error {
