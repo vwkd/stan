@@ -7,7 +7,7 @@ static MATERIALS: Mutex<Vec<Option<api::Material>>> = Mutex::new(Vec::new());
 struct Component;
 
 impl api::Guest for Component {
-    fn get(id: u64) -> Option<api::Material> {
+    fn get(id: api::Id) -> Option<api::Material> {
         let id: usize = id.try_into().expect("64-bit OS");
 
         let materials = MATERIALS.lock().unwrap();
@@ -15,11 +15,11 @@ impl api::Guest for Component {
         materials.get(id).cloned().unwrap_or(None)
     }
 
-    fn add(material: api::MaterialAdd) -> Result<u64, api::ErrorAdd> {
+    fn add(material: api::MaterialAdd) -> Result<api::Id, api::ErrorAdd> {
         let mut materials = MATERIALS.lock().unwrap();
 
         let id = materials.len();
-        let id: u64 = id.try_into().expect("64-bit OS");
+        let id: api::Id = id.try_into().expect("64-bit OS");
 
         if id == u64::MAX {
             return Err(api::ErrorAdd::MaxCapacity);

@@ -1,8 +1,10 @@
 package stan:material
 
 interface api {
+  type id = u64;
+
   record material {
-    id: u64,
+    id: id,
     name: string,
   }
 
@@ -16,11 +18,11 @@ interface api {
   }
 
   /// get material
-  get: func(id: u64) -> option<material>
+  get: func(id: id) -> option<material>
 
   /// add material
   /// returns material id or error
-  add: func(material: material-add) -> result<u64, error-add>
+  add: func(material: material-add) -> result<id, error-add>
 }
 
 world material {
