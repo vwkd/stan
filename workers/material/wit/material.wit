@@ -6,10 +6,17 @@ interface api {
   record material {
     id: id,
     name: string,
+    parts: list<part>
+  }
+
+  record part {
+    material-id: id,
+    amount: u32,
   }
 
   record material-add {
     name: string,
+    parts: list<part>
     // ... remaining
   }
 

@@ -28,6 +28,7 @@ impl api::Guest for Component {
         let material = api::Material {
             id,
             name: material.name,
+            parts: material.parts,
         };
 
         materials.push(Some(material));
@@ -55,12 +56,19 @@ mod tests {
         let id = 0;
         let name = "foo".to_string();
 
-        let material = api::MaterialAdd { name: name.clone() };
+        let material = api::MaterialAdd {
+            name: name.clone(),
+            parts: vec![],
+        };
 
         let _ = Component::add(material);
         let output = Component::get(id);
 
-        let material = api::Material { id, name };
+        let material = api::Material {
+            id,
+            name,
+            parts: vec![],
+        };
 
         assert_eq!(output, Some(material));
     }
@@ -82,6 +90,7 @@ mod tests {
 
         let material = api::MaterialAdd {
             name: "foo".to_string(),
+            parts: vec![],
         };
 
         let output = Component::add(material.clone());
@@ -97,6 +106,7 @@ mod tests {
 
         let material = api::MaterialAdd {
             name: "foo".to_string(),
+            parts: vec![],
         };
 
         let _ = Component::add(material.clone());
