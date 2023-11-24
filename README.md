@@ -4,10 +4,11 @@ A modern, modular and extensible ERP
 
 
 
-## Features
+## Introduction
 
-- built as Wasm components
-- running durably in Golem Cloud
+An ERP built as Wasm components which run durably on Golem Cloud. Each component exports exactly one functionality which other components can import. Components are written in Rust.
+
+Currently it's just the backend API without the frontend. Currently, interacting with the API can be done through the Golem CLI or Golem REST API.
 
 
 
