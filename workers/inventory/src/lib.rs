@@ -14,13 +14,13 @@ impl api::Guest for Component {
         INVENTORY.lock().unwrap().get(&id).cloned().unwrap_or(0)
     }
 
-    fn increase(id: api::Id, amount: api::Amount) -> Result<(), api::Error> {
+    fn increase(id: api::Id, amount: api::Amount) -> Result<(), api::ErrorIncrease> {
         let mut inventory = INVENTORY.lock().unwrap();
 
         let existing = inventory.get(&id).cloned().unwrap_or(0);
 
         if existing > api::Amount::MAX - amount {
-            return Err(api::Error::TooHigh);
+            return Err(api::ErrorIncrease::TooHigh);
         }
 
         inventory.insert(id, existing + amount);
@@ -28,13 +28,13 @@ impl api::Guest for Component {
         Ok(())
     }
 
-    fn decrease(id: api::Id, amount: api::Amount) -> Result<(), api::Error> {
+    fn decrease(id: api::Id, amount: api::Amount) -> Result<(), api::ErrorDecrease> {
         let mut inventory = INVENTORY.lock().unwrap();
 
         let existing = inventory.get(&id).cloned().unwrap_or(0);
 
         if amount > existing {
-            return Err(api::Error::TooLow);
+            return Err(api::ErrorDecrease::TooLow);
         }
 
         inventory.insert(id, existing - amount);
@@ -93,7 +93,7 @@ mod tests {
         let _ = Component::increase(id, api::Amount::MAX - 10);
         let output = Component::increase(id, amount);
 
-        assert_eq!(output, Err(api::Error::TooHigh));
+        assert_eq!(output, Err(api::ErrorIncrease::TooHigh));
     }
 
     #[test]
@@ -118,7 +118,7 @@ mod tests {
 
         let output = Component::decrease(id, amount);
 
-        assert_eq!(output, Err(api::Error::TooLow));
+        assert_eq!(output, Err(api::ErrorDecrease::TooLow));
     }
 
     fn clear() {
