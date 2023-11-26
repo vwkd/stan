@@ -4,27 +4,39 @@ use bindings::stan::inventory;
 
 struct Component;
 
+impl From<inventory::api::ErrorDecrease> for api::Error {
+    fn from(value: inventory::api::ErrorDecrease) -> Self {
+        match value {
+            inventory::api::ErrorDecrease::TooLow => api::Error::InventoryTooLow,
+        }
+    }
+}
+
 impl api::Guest for Component {
-    fn create(item: api::Item) -> Result<(), api::Error> {
-        // decrease inventory of item by quantity
-        inventory::api::decrease(&item.product_id, item.quantity).map_err(|e| match e {
-            inventory::api::Error::TooLow => api::Error::InventoryTooLow,
-            _ => todo!(),
-        })?;
-
-        // notification of successful order or error
-
-        // shipment
-        // confirm shipment
+    fn create(item: api::Item, _customer: api::Customer) -> Result<(), api::Error> {
         // todo: if error, revert previous steps
 
-        // notification of successful shipment or error
+        // STATUS: pending
+        // validate
+        // try to decrease inventory
+        inventory::api::decrease(item.product_id, item.quantity)?;
+        // wait for approval
 
+        // STATUS: processing
+        // prepare shipping
+        // let shipment_details = shipment::api::ship(item.product_id, item.quantity, customer.address)?;
+        // notify customer, we confirm your order
+
+        // STATUS: shipping
+        // notify customer, your order is on the way
+
+        // STATUS: fulfilled
+        // invoice generation
+        // financial transaction
+        // notify customer, please pay us
+
+        // STATUS: paid
         // payment
-        // send payment
-        // todo: if error, revert previous steps
-
-        // notification of successful payment or error
 
         Ok(())
     }

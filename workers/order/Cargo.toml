@@ -13,4 +13,5 @@ cargo-component-bindings = { workspace = true }
 package = "stan:order"
 
 [package.metadata.component.target.dependencies]
+"stan:customer" = { path = "../customer/wit" }
 "stan:inventory" = { path = "../inventory/wit" }

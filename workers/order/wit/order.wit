@@ -1,18 +1,22 @@
 package stan:order
 
 interface api {
+  use stan:customer/api.{customer}
+  use stan:inventory/api.{amount}
+
   record item {
-    product-id: string,
+    product-id: u64,
     price: float32,
-    quantity: u32,
+    quantity: amount,
   }
 
   enum error {
+    declined,
     inventory-too-low,
     // todo: ...
   }
 
-  create: func(item: item) -> result<_, error>
+  create: func(item: item, customer: customer) -> result<_, error>
 }
 
 world order {
