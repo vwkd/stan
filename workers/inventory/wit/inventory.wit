@@ -1,17 +1,25 @@
 package stan:inventory
 
 interface api {
+  type id = u64;
+  type amount = u32;
+
   enum error {
     too-low,
     too-high,
     // todo: ...
   }
 
-  get: func(id: string) -> u32
+  /// get inventory
+  get: func(id: id) -> amount
 
-  increase: func(id: string, amount: u32) -> result<_, error>
+  /// increase inventory
+  /// returns new amount or error
+  increase: func(id: id, amount: amount) -> result<_, error>
   
-  decrease: func(id: string, amount: u32) -> result<_, error>
+  /// decrease inventory
+  /// returns new amount or error
+  decrease: func(id: id, amount: amount) -> result<_, error>
 }
 
 world inventory {

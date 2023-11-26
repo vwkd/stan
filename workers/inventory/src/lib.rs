@@ -4,21 +4,22 @@ use once_cell::sync::Lazy;
 use std::{collections::HashMap, sync::Mutex};
 
 // todo: verify id is of existing Product
-static INVENTORY: Lazy<Mutex<HashMap<String, u32>>> = Lazy::new(|| Mutex::new(HashMap::new()));
+static INVENTORY: Lazy<Mutex<HashMap<api::Id, api::Amount>>> =
+    Lazy::new(|| Mutex::new(HashMap::new()));
 
 struct Component;
 
 impl api::Guest for Component {
-    fn get(id: String) -> u32 {
+    fn get(id: api::Id) -> api::Amount {
         INVENTORY.lock().unwrap().get(&id).cloned().unwrap_or(0)
     }
 
-    fn increase(id: String, amount: u32) -> Result<(), api::Error> {
+    fn increase(id: api::Id, amount: api::Amount) -> Result<(), api::Error> {
         let mut inventory = INVENTORY.lock().unwrap();
 
         let existing = inventory.get(&id).cloned().unwrap_or(0);
 
-        if existing > u32::MAX - amount {
+        if existing > api::Amount::MAX - amount {
             return Err(api::Error::TooHigh);
         }
 
@@ -27,7 +28,7 @@ impl api::Guest for Component {
         Ok(())
     }
 
-    fn decrease(id: String, amount: u32) -> Result<(), api::Error> {
+    fn decrease(id: api::Id, amount: api::Amount) -> Result<(), api::Error> {
         let mut inventory = INVENTORY.lock().unwrap();
 
         let existing = inventory.get(&id).cloned().unwrap_or(0);
@@ -52,11 +53,11 @@ mod tests {
     fn get() {
         clear();
 
-        let id = "123".to_string();
+        let id = 123;
         let amount = 42;
 
-        let _ = Component::increase(id.clone(), amount);
-        let output = Component::get(id.clone());
+        let _ = Component::increase(id, amount);
+        let output = Component::get(id);
 
         assert_eq!(output, amount);
     }
@@ -65,7 +66,7 @@ mod tests {
     fn get_invalid() {
         clear();
 
-        let output = Component::get("123".to_string());
+        let output = Component::get(123);
 
         assert_eq!(output, 0);
     }
@@ -74,10 +75,10 @@ mod tests {
     fn increase() {
         clear();
 
-        let id = "123".to_string();
+        let id = 123;
         let amount = 42;
 
-        let output = Component::increase(id.clone(), amount);
+        let output = Component::increase(id, amount);
 
         assert_eq!(output, Ok(()));
     }
@@ -86,11 +87,11 @@ mod tests {
     fn increase_too_high() {
         clear();
 
-        let id = "123".to_string();
+        let id = 123;
         let amount = 42;
 
-        let _ = Component::increase(id.clone(), u32::MAX - 10);
-        let output = Component::increase(id.clone(), amount);
+        let _ = Component::increase(id, api::Amount::MAX - 10);
+        let output = Component::increase(id, amount);
 
         assert_eq!(output, Err(api::Error::TooHigh));
     }
@@ -99,11 +100,11 @@ mod tests {
     fn decrease() {
         clear();
 
-        let id = "123".to_string();
+        let id = 123;
         let amount = 42;
 
-        let _ = Component::increase(id.clone(), 50);
-        let output = Component::decrease(id.clone(), amount);
+        let _ = Component::increase(id, 50);
+        let output = Component::decrease(id, amount);
 
         assert_eq!(output, Ok(()));
     }
@@ -112,10 +113,10 @@ mod tests {
     fn decrease_too_low() {
         clear();
 
-        let id = "123".to_string();
+        let id = 123;
         let amount = 42;
 
-        let output = Component::decrease(id.clone(), amount);
+        let output = Component::decrease(id, amount);
 
         assert_eq!(output, Err(api::Error::TooLow));
     }
