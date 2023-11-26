@@ -9,11 +9,11 @@ Product state worker
 - add
 
 ```sh
-golem-cli worker invoke-and-await -w product-1 -t product -p stan -f stan:product/api/add -j '[{"id": "123", "name": "foo"}]'
+golem-cli worker invoke-and-await -w product-1 -t product -p stan -f stan:product/api/add -j '[{"name": "foo"}]'
 ```
 
 - get
 
 ```sh
-golem-cli worker invoke-and-await -w product-1 -t product -p stan -f stan:product/api/get -j '["123"]'
+golem-cli worker invoke-and-await -w product-1 -t product -p stan -f stan:product/api/get -j '[123]'
 ```

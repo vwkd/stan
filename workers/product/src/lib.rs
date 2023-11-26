@@ -1,28 +1,38 @@
 cargo_component_bindings::generate!();
 use bindings::exports::stan::product::api;
-use once_cell::sync::Lazy;
-use std::{collections::HashMap, sync::Mutex};
+use std::sync::Mutex;
 
-static PRODUCTS: Lazy<Mutex<HashMap<String, api::Product>>> =
-    Lazy::new(|| Mutex::new(HashMap::new()));
+static PRODUCTS: Mutex<Vec<Option<api::Product>>> = Mutex::new(Vec::new());
 
 struct Component;
 
 impl api::Guest for Component {
-    fn get(id: String) -> Option<api::Product> {
-        PRODUCTS.lock().unwrap().get(&id).cloned()
+    fn get(id: api::Id) -> Option<api::Product> {
+        let id: usize = id.try_into().expect("64-bit OS");
+
+        let products = PRODUCTS.lock().unwrap();
+
+        products.get(id).cloned().unwrap_or(None)
     }
 
-    fn add(product: api::Product) -> Result<(), api::Error> {
+    fn add(product: api::ProductAdd) -> Result<api::Id, api::ErrorAdd> {
         let mut products = PRODUCTS.lock().unwrap();
 
-        if products.contains_key(&product.id) {
-            return Err(api::Error::Duplicate);
+        let id = products.len();
+        let id: api::Id = id.try_into().expect("64-bit OS");
+
+        if id == u64::MAX {
+            return Err(api::ErrorAdd::MaxCapacity);
         }
 
-        products.insert(product.id.clone(), product);
+        let product = api::Product {
+            id,
+            name: product.name,
+        };
 
-        Ok(())
+        products.push(Some(product));
+
+        Ok(id)
     }
 }
 
@@ -34,7 +44,7 @@ mod tests {
 
     impl PartialEq for api::Product {
         fn eq(&self, other: &Self) -> bool {
-            self.id == other.id && self.name == other.name
+            self.name == other.name
         }
     }
 
@@ -42,22 +52,24 @@ mod tests {
     fn get() {
         clear();
 
-        let product = api::Product {
-            id: "123".to_string(),
-            name: "foo".to_string(),
-        };
+        let id = 0;
+        let name = "foo".to_string();
 
-        let _ = Component::add(product.clone());
-        let output = Component::get(product.id.clone());
+        let product = api::ProductAdd { name: name.clone() };
+
+        let _ = Component::add(product);
+        let output = Component::get(id);
+
+        let product = api::Product { id, name };
 
         assert_eq!(output, Some(product));
     }
 
     #[test]
-    fn get_invalid() {
+    fn get_not_exist() {
         clear();
 
-        let output = Component::get("123".to_string());
+        let output = Component::get(123);
 
         assert_eq!(output, None);
     }
@@ -66,30 +78,42 @@ mod tests {
     fn add() {
         clear();
 
-        let product = api::Product {
-            id: "123".to_string(),
+        let id = 0;
+
+        let product = api::ProductAdd {
             name: "foo".to_string(),
         };
 
         let output = Component::add(product.clone());
 
-        assert_eq!(output, Ok(()));
+        assert_eq!(output, Ok(id));
     }
 
     #[test]
-    fn add_duplicate() {
+    fn add_incrementing_ids() {
         clear();
 
-        let product = api::Product {
-            id: "123".to_string(),
+        let id = 1;
+
+        let product = api::ProductAdd {
             name: "foo".to_string(),
         };
 
         let _ = Component::add(product.clone());
         let output = Component::add(product.clone());
 
-        assert_eq!(output, Err(api::Error::Duplicate));
+        assert_eq!(output, Ok(id));
     }
+
+    // todo
+    // #[test]
+    // fn add_max_capacity() {
+    //     clear();
+
+    //     // ...
+
+    //     assert_eq!(output, Err(api::ErrorAdd::MaxCapacity));
+    // }
 
     fn clear() {
         let mut products = PRODUCTS.lock().unwrap();

@@ -1,19 +1,28 @@
 package stan:product
 
 interface api {
+  type id = u64;
+
   record product {
-    id: string,
+    id: id,
     name: string,
   }
 
-  enum error {
-    duplicate,
-    // todo: ...
+  record product-add {
+    name: string,
+    // ... remaining
   }
 
-  get: func(id: string) -> option<product>
+  enum error-add {
+    max-capacity,
+  }
 
-  add: func(product: product) -> result<_, error>
+  /// get product
+  get: func(id: id) -> option<product>
+
+  /// add product
+  /// returns product id or error
+  add: func(product: product-add) -> result<id, error-add>
 }
 
 world product {
