@@ -3,7 +3,7 @@ use bindings::exports::stan::inventory::api;
 use once_cell::sync::Lazy;
 use std::{collections::HashMap, sync::Mutex};
 
-// todo: verify id is of existing Product
+// todo: restrict id to existing Product, currently allows to get/increase/decrease non-existent id
 static INVENTORY: Lazy<Mutex<HashMap<api::Id, api::Amount>>> =
     Lazy::new(|| Mutex::new(HashMap::new()));
 
