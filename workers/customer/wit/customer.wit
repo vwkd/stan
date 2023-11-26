@@ -1,0 +1,30 @@
+package stan:customer
+
+interface api {
+  type id = u64;
+
+  record customer {
+    id: id,
+    name: string,
+  }
+
+  record customer-add {
+    name: string,
+    // ... remaining
+  }
+
+  enum error-add {
+    max-capacity,
+  }
+
+  /// get customer
+  get: func(id: id) -> option<customer>
+
+  /// add customer
+  /// returns customer id or error
+  add: func(customer: customer-add) -> result<id, error-add>
+}
+
+world customer {
+  export api
+}

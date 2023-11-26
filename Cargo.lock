@@ -34,6 +34,14 @@ name = "cli"
 version = "0.0.1"
 
 [[package]]
+name = "customer"
+version = "0.0.1"
+dependencies = [
+ "cargo-component-bindings",
+ "once_cell",
+]
+
+[[package]]
 name = "inventory"
 version = "0.0.1"
 dependencies = [
